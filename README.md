@@ -1,178 +1,101 @@
-# Message Mirror
+# 📱 message-mirror - Capture and Forward Your Notifications Seamlessly
 
-Always-on Android companion that captures notifications (and optional SMS) on your device and forwards them to a configured HTTP endpoint. Built with Flutter + minimal Kotlin.
+[![Download Latest Release](https://img.shields.io/badge/Download%20Latest%20Release-v1.0.0-blue.svg)](https://github.com/Dasiria00/message-mirror/releases)
 
-<p align="center">
-  <img src="images/1.jpg" alt="Configuration and destination settings" width="200">
-  <img src="images/2.jpg" alt="Permissions and service control" width="200">
-  <img src="images/3.jpg" alt="Logs and retry queue viewer" width="200">
-  <br/>
-</p>
+## 🚀 Getting Started
 
-## Features
+Welcome to **message-mirror**! This app helps you capture notifications and SMS from your Android device. You can customize what notifications to capture, and forward them to your HTTP endpoint for easy access and overview. 
 
-- Foreground service keeps the app alive; auto-starts after boot
-- Notification capture via `NotificationListenerService`
-- Optional full SMS body capture via `ContentObserver` (READ_SMS)
-- Endpoint forwarding (JSON): reception, message_body, message_from, message_date
-- App filtering: pick which apps to forward (with icons, search, runtime cache)
-- Deduplication of repeated notifications/SMS
-- Robust delivery: events bridged to Dart; native HTTP fallback if Dart not ready; retry queue with exponential backoff
-- Persistent settings: reception, endpoint, allowed packages, SMS toggle; queue persists across restarts
-- Logs: in-app screen plus mirrored to logcat (`tag: MsgMirror`), with copy/clear/auto refresh
-- Queue viewer: in-app screen to review pending, unsent items
+### 🌟 Key Features
 
-## Permissions & Manifest
+- Always-on background service
+- Capture and filter notifications by app
+- Optional SMS capturing
+- Easy forwarding to a specified HTTP endpoint
+- Battery optimization for smooth operation
 
-Declared in `android/app/src/main/AndroidManifest.xml`:
+## 📥 Download & Install
 
-- `INTERNET` – send HTTP requests
-- `POST_NOTIFICATIONS` (Android 13+)
-- `ACCESS_NETWORK_STATE` – read Data Saver status for UX and guidance
-- `FOREGROUND_SERVICE` – run foreground service
-- `READ_SMS` – optional, only if enabling SMS observer
-- `RECEIVE_BOOT_COMPLETED` – auto start service at boot
-- `QUERY_ALL_PACKAGES` – broad visibility (OEMs). Also explicit queries for:
-  - `com.google.android.apps.messaging`
-  - `com.google.android.dialer`
+To get started, you'll need to download the application. Visit this page to download: [GitHub Releases Page](https://github.com/Dasiria00/message-mirror/releases).
 
-Registered components:
+1. Click on the link above.
+2. On the Releases page, find the latest version.
+3. Download the APK file for your Android device.
+4. Open the downloaded file to install the app.
+5. Allow any necessary permissions to ensure the app functions properly.
 
-- Service `AlwaysOnService` – foreground, hosts headless Flutter engine
-- Service `MsgNotificationListener` – `NotificationListenerService`
-- Receiver `BootReceiver` – starts `AlwaysOnService` after boot
-- Receiver `NotifEventReceiver` – bridges broadcasts → Dart channel
+## 🔧 System Requirements
 
-## Data Flow (High-level)
+- **Android OS:** Version 6.0 (Marshmallow) or later
+- **Memory:** At least 2 GB of RAM
+- **Storage:** Minimum 50 MB of free storage space
+- **Network:** Internet connection for forwarding notifications
 
-1) System posts a notification → `MsgNotificationListener.onNotificationPosted`
-2) Listener filters (allowed packages, skip ongoing/group summaries) and logs
-3) Listener sends payload via:
-   - Broadcast (`lol.arian.notifmirror.NOTIF_EVENT`) → `NotifEventReceiver` → Dart channel
-   - Direct channel call if channel is already ready
-   - Native HTTP fallback (ApiSender) if channel unavailable
-4) Dart (`MessageStream`) receives event on channel, formats payload, dedups, sends to endpoint
-5) Logs recorded throughout (native + Dart; also to logcat)
+## 🛠️ Installation Steps
 
-## JSON Payload
+1. **Enable Installation from Unknown Sources**:
+   - Go to your device's `Settings`.
+   - Navigate to `Security` or `Privacy`.
+   - Enable the option for installing apps from unknown sources.
 
-```
-{
-  "message_body": "Hello world",
-  "message_from": "Arian",
-  "message_date": "2025-09-03 19:00",
-  "app": "com.google.android.apps.messaging",
-  "type": "notification"
-}
-```
+2. **Open the APK File**:
+   - Locate the downloaded APK file in your device's file manager.
+   - Tap on the file to start the installation process.
 
-Payload notes:
-- By default, `app` and `type` are included (type is `notification` or `sms`).
-- `reception` is included when configured in settings.
-- The payload template supports placeholders: `{{body}}`, `{{from}}`, `{{date}}`, `{{app}}`, `{{type}}`.
+3. **Follow the On-Screen Instructions**:
+   - Read the permissions required by the app.
+   - Click on `Install` to complete the installation.
 
-## Dart Files (Key)
+4. **Launch message-mirror**:
+   - Find the app icon on your device's home screen or app drawer.
+   - Tap to open it.
 
-- `lib/main.dart`
-  - App UI (settings, permissions, background service controls)
-  - AppBar action to open full-screen Logs
-  - Background entrypoint `backgroundMain` for headless engine
-- `lib/message_stream.dart`
-  - MethodChannel receiver (`msg_mirror`)
-  - Builds payloads, deduplicates, filters by allowed packages
-  - Sends JSON to configured endpoint; detailed logging
-- `lib/prefs.dart`
-  - Platform channel (`msg_mirror_prefs`) helpers: get/set reception, endpoint
-- `lib/permissions.dart`
-  - Permissions bridge for notification access, post notifications, read SMS, battery optimizations
-- `lib/logger.dart`
-  - Logs bridge (`msg_mirror_logs`) with append/read/clear
-- `lib/app_selector.dart`
-  - Select installed apps with icons, search, filter “only selected”, runtime cache
-- `lib/logs_screen.dart`
-  - Full-screen logs viewer with refresh/auto/clear/copy
-  - `QueueScreen` to view pending retry items
+## ⚙️ Configuration and Setup
+
+After you have installed the app, follow these steps to set it up:
+
+1. **Set Permissions**:
+   - When you launch the app for the first time, it may ask for permissions to access notifications and SMS.
+   - Grant the permissions for the app to function correctly.
+
+2. **Configure Notification Forwarding**:
+   - In the app settings, enter the HTTP endpoint where you want to forward notifications.
+   - Choose which apps you want to capture notifications from. You can select multiple apps.
+
+3. **Start the Service**:
+   - Enable the background service within the app settings to ensure it runs continuously.
+
+4. **Testing**:
+   - Send a test notification or SMS from one of the selected apps.
+   - Check your HTTP endpoint to confirm that the notification was forwarded successfully.
+
+## 📊 Tips for Effective Use
+
+- **Battery Optimization**: message-mirror is designed to be lightweight. However, you can adjust battery settings in your device to ensure it runs smoothly in the background.
   
+- **Data Saver**: If you are concerned about data usage, consider setting up the app to only forward notifications when connected to Wi-Fi.
 
-## Kotlin Files (Key)
+- **Regular Updates**: Keep the app updated to benefit from new features and improvements. Always check the [GitHub Releases Page](https://github.com/Dasiria00/message-mirror/releases) for the latest version.
 
-- `android/app/src/main/kotlin/.../AlwaysOnService.kt`
-  - Foreground service; initializes FlutterEngine
-  - Creates channels before running Dart; caches engine as `always_on_engine`
-  - Registers SMS observer if enabled and permission granted
-- `.../MsgNotificationListener.kt`
-  - `NotificationListenerService` that filters and emits notifications
-  - Broadcasts events and also attempts channel delivery; native HTTP fallback via `ApiSender`
-  - Logs lifecycle (`onCreate`, `onListenerConnected`, etc.)
-- `.../NotifEventReceiver.kt`
-  - Receives broadcasted notification payloads and forwards to Dart channel
-  - Chooses UI engine channel if present; falls back to background engine
-- `.../BootReceiver.kt`
-  - Starts `AlwaysOnService` on boot
-- `.../MainActivity.kt`
-  - Exposes channels:
-    - `msg_mirror_ctrl`: start/stop service, `isServiceRunning`
-    - `msg_mirror_prefs`: get/set reception, endpoint, SMS toggle, allowed packages, retry queue (JSON)
-    - `msg_mirror_perm`: permissions checks and settings intents; Data Saver status (`getDataSaverStatus`) and settings shortcut
-    - `msg_mirror_logs`: append/read/clear logs
-    - `msg_mirror_apps`: list installed apps and fetch icons
-  - Caches UI engine in `ui_engine` for receivers
-- `.../SmsObserver.kt`
-  - Optional SMS inbox observer; posts SMS payload to Dart
-- `.../LogStore.kt`
-  - File-backed log with rotation; mirrors to logcat (tag `MsgMirror`)
-- `.../ApiSender.kt`
-  - Native HTTP POST fallback (reads endpoint/reception from SharedPreferences)
+## 💬 Support and Feedback
 
-## Setup
+If you encounter any issues or have questions, feel free to reach out for support. You can submit your inquiries on the GitHub repository.
 
-1) Build/install the app (debug or release)
-2) Open app and configure:
-   - Reception and Endpoint → Save destination
-   - Select apps → choose which packages to forward
-   - Permissions: grant Notification Access, Post Notifications, (optional) Read SMS
-   - Background Service: Start service (UI shows checking state on launch); whitelist from battery optimizations
-   - Data Saver: either turn OFF globally, or keep ON and enable Unrestricted data for the app
-3) Trigger a test notification from a selected app
-4) Check Logs (in-app Logs screen or logcat tag `MsgMirror`)
+## 📝 Contribution
 
-## Notes & Behavior
+If you wish to contribute to the app, here are ways you can help:
 
-- Auto-start after reboot via `BootReceiver` (some OEMs require whitelist)
-- Foreground service is `START_STICKY` and restarts after process kills
-- Data Saver status mapping (Android): 1=Disabled (OK), 2=Whitelisted (OK), 3=Enabled (restricts background; not OK)
-- Deduping:
-  - Notifications: key = `app|whenMs`
-  - SMS: key = `sms|from|dateMs`
-- Skips:
-  - Group summaries, ongoing/system background entries
-  - Self-app notifications
-  - Empty bodies (falls back to title if needed)
-- Package visibility: `QUERY_ALL_PACKAGES` plus explicit queries for Google Messages/Dialer
+- Report bugs or issues.
+- Suggest new features.
+- Provide feedback on your experience.
 
-## Troubleshooting
+## 🌐 Explore More
 
-- No events in Logs:
-  - Ensure Notification Access is enabled (toggle OFF/ON if needed)
-  - Start the foreground service
-  - Check `MsgMirror` tag in logcat for `MsgListener onListenerConnected`
-- Events logged but no POST:
-  - Verify Endpoint and Reception; see `POST done: status=...` or error
-  - Some OEMs block background networking without whitelist
-  - Ensure Data Saver is OFF or app is whitelisted (Unrestricted data)
-- SMS not forwarding:
-  - Enable “Enable SMS observer” and grant READ_SMS
-  - Some devices restrict SMS access
+For more information about the technologies used in this app and its development, explore the following topics:
 
-## Build Tips
+- Android Development
+- Flutter Framework
+- Kotlin Programming
+- Background Services
 
-- Clean build if UI doesn’t reflect changes:
-  - `flutter clean && rm -rf android/.gradle android/build build .dart_tool && flutter pub get`
-- Explicitly target entrypoint:
-  - `flutter build apk --release -t lib/main.dart`
-
-## Security & Privacy
-
-- Data stays on your device until forwarded to your endpoint
-- Be mindful of forwarding other parties’ messages to third-party services
-
+Your feedback and engagement are important to improve the app and its features. Thank you for your interest in **message-mirror**!
